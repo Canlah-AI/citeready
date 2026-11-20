@@ -299,11 +299,14 @@ function maskNote(n: number) {
   return n ? `Masking replaces ${n} email address${n === 1 ? '' : 'es'} or phone number${n === 1 ? '' : 's'} with placeholders before upload.` : 'No emails or phone numbers found to mask.';
 }
 
-function mergeVague(local: LocalAnalysis, f: FactsResult) {
+function mergeVague(local: LocalAnalysis, f: FactsResult, source: string) {
   const out: Array<{ text: string; fix: string; by: string }> = [];
+  const src = normalise(source);
   for (const v of local.vague) out.push({ text: v.phrase, fix: v.suggestion, by: 'rule' });
   for (const v of f.vague) {
     const n = normalise(v.text);
+    // Same rule as facts: a phrase the model flags must actually appear in the text.
+    if (!n || !src.includes(n)) continue;
     if (out.some((o) => n.includes(normalise(o.text)) || normalise(o.text).includes(n))) continue;
     out.push({ text: v.text, fix: v.fix, by: 'AI' });
   }
@@ -508,7 +511,7 @@ async function check(cloudConsent = false) {
     logs.push(r2.log);
     const kit = coerceKit(r2.data);
 
-    const vague = mergeVague(local, facts);
+    const vague = mergeVague(local, facts, text);
     const checks = buildChecklist(sent, facts.name, verified, local, vague.length, kit);
     renderRoute(route, logs);
     renderResults({ text, facts, verified, missing, vague, kit, checks });
