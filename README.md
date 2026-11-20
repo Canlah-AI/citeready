@@ -4,7 +4,7 @@
 
 The core is **hybrid inference with Firebase AI Logic**: private drafts are checked on the device with Gemini Nano, and long public pages or browsers without Nano use a cloud Gemini model. The UI shows which path ran for every step, and why.
 
-- **Live app:** https://citeready.web.app
+- **Live app:** https://citeready.web.app (testing steps: [TESTING.md](TESTING.md))
 - **Chrome extension:** [`extension/`](extension/) (load unpacked; sends the current tab to the app)
 - **Built for:** #BuildHybridAI 2026, Web (Chrome) category
 - **License:** Apache-2.0
