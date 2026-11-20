@@ -94,13 +94,26 @@ flowchart LR
 
 ### To get the on-device path
 
-Gemini Nano runs in desktop Chrome 139 or newer on machines that meet Chrome's built-in AI hardware and storage requirements.
+Gemini Nano runs in desktop Chrome 139 or newer on machines that meet Chrome's built-in AI hardware and storage requirements. Chrome only downloads the model when the disk holding the Chrome profile has plenty of free space, and in recent versions only when **On-device AI** is on in `chrome://settings/ai`.
 
 1. Go to `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, set it to **Enabled**, restart Chrome.
 2. Open CiteReady, click the pill in the top-right corner, then **Download Gemini Nano (one time)** if offered. The first download can take several minutes.
 3. When the pill says **Gemini Nano ready on this device**, run the **Private launch draft** sample: the route card should read "Ran entirely on this device" with 0 characters sent to the cloud.
 
 Without Nano, public pages still work through the cloud, and private drafts show the consent step instead of uploading.
+
+### Verified on real Gemini Nano
+
+Runs on the hosted app in Chrome Canary 160 with Gemini Nano downloaded (2026-11-20). Times are as shown in the route card; on-device time varies a lot with the input.
+
+| Sample | Steps (requested mode → `inferenceSource`) | Time per step | Sent to the cloud |
+|---|---|---|---|
+| Private launch draft | `ONLY_ON_DEVICE` → on-device, twice | 7.4 s, 5.6 s | 0 characters |
+| Public clinic page | `PREFER_ON_DEVICE` → on-device, twice | 65.8 s, 10.3 s | 0 characters |
+| Long public page | `ONLY_IN_CLOUD` → cloud, then `PREFER_ON_DEVICE` → on-device | 5.3 s, 9.5 s | 15,564 characters |
+| Same long text as a private draft | `ONLY_ON_DEVICE` → on-device: part 1/2, part 2/2, answer kit | 83.3 s, 28.1 s, 12.5 s | 0 characters |
+
+More detail in [TESTING.md](TESTING.md). For machines without Nano, [`tests/prompt-api-double.js`](tests/prompt-api-double.js) is a test double of the Prompt API that drives the on-device branches in the real UI (not real inference).
 
 ### Chrome extension
 
@@ -119,7 +132,7 @@ Requirements: Node 20+, a Firebase project on the free Spark plan.
 5. `npm run dev` and open the printed URL. On first load the browser console prints an App Check debug token; add it under **App Check → Apps → Manage debug tokens** (or put a registered token in `VITE_APPCHECK_DEBUG_TOKEN`).
 6. Optional: `npx firebase-tools deploy --only remoteconfig` to publish the routing policy, `npm run build && npx firebase-tools deploy --only hosting` to host it (edit `.firebaserc` / `firebase.json` for your site name).
 
-Tests: `npm test` (routing policy, local detectors, quote verification, checklist, schema conversion).
+Tests: `npm test` (routing policy, local detectors, quote verification, checklist, schema conversion). `tests/prompt-api-double.js` stands in for Gemini Nano when you want to click through the on-device paths on a machine without it.
 
 ## Project layout
 

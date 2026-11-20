@@ -18,12 +18,27 @@ The pill in the top-right corner opens the on-device model panel: Chrome version
 
 ## 2. Testing the on-device path (Gemini Nano)
 
-Requires desktop Chrome 139 or newer on hardware that meets Chrome's built-in AI requirements, with enough free disk space for the model download.
+Requires desktop Chrome 139 or newer on hardware that meets Chrome's built-in AI requirements. Chrome only downloads the model when the disk holding the Chrome profile has plenty of free space, and in recent versions only when **On-device AI** is turned on in `chrome://settings/ai`.
 
-1. Open `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, set it to **Enabled**, and restart Chrome.
+1. Open `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input`, set it to **Enabled**, and restart Chrome. If your Chrome has `chrome://settings/ai`, make sure **On-device AI** is on.
 2. Open https://citeready.web.app and click the pill in the top-right corner. If it offers **Download Gemini Nano (one time)**, click it and wait for the progress bar. The first download can take several minutes.
 3. When the pill reads **Gemini Nano ready on this device**, run the **Private launch draft** sample. Expected: "Ran entirely on this device", both steps `ONLY_ON_DEVICE` / **On this device · Gemini Nano**, 0 characters sent to the cloud.
 4. Paste a longer private text (over 12,000 characters, for example the Long public page sample with **Private draft** selected). Expected: "Extract facts (part 1/2)", "(part 2/2)" and "Write answer kit", all on the device.
+
+If availability stays "unavailable" on capable hardware with enough free disk, also set `chrome://flags/#optimization-guide-on-device-model` to **Enabled BypassPerfRequirement** and restart. Our test browser was configured this way.
+
+**What we observed** on Chrome Canary 160 with the real Gemini Nano model, on the hosted app (2026-11-20):
+
+| Sample | Steps (requested mode → inferenceSource) | Time per step | Sent to the cloud | Checks |
+|---|---|---|---|---|
+| Private launch draft | `ONLY_ON_DEVICE` → on-device, twice | 7.4 s, 5.6 s | 0 characters | 3 of 9 |
+| Public clinic page | `PREFER_ON_DEVICE` → on-device, twice | 65.8 s, 10.3 s | 0 characters | 8 of 9 |
+| Long public page | `ONLY_IN_CLOUD` → cloud, then `PREFER_ON_DEVICE` → on-device | 5.3 s, 9.5 s | 15,564 characters (the extraction prompt) | 8 of 9 |
+| Long public page text marked **Private draft** (14,480 characters) | `ONLY_ON_DEVICE` → on-device: part 1/2, part 2/2, answer kit | 83.3 s, 28.1 s, 12.5 s | 0 characters | 7 of 9 |
+
+On-device time depends on the input and the machine; expect anything from a few seconds to about a minute per step.
+
+Without Gemini Nano, the same on-device branches can be exercised in the real UI with the Prompt API test double in `tests/prompt-api-double.js` (not real inference).
 
 ## 3. Chrome extension (optional)
 
