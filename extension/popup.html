@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  body { font: 14px/1.45 Inter, system-ui, -apple-system, sans-serif; width: 300px; margin: 0; padding: 16px; color: #0f172a; }
+  h1 { font-size: 15px; font-weight: 600; margin: 0 0 6px; }
+  p { margin: 0 0 12px; color: #475569; font-size: 13px; }
+  label { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; margin-bottom: 14px; }
+  input { accent-color: #2563eb; margin-top: 2px; }
+  button { width: 100%; background: #2563eb; color: #fff; border: 0; border-radius: 8px; padding: 10px; font: inherit; font-weight: 600; cursor: pointer; }
+  small { display: block; color: #64748b; margin-top: 10px; font-size: 11px; }
+  .err { color: #b91c1c; }
+</style>
+</head>
+<body>
+  <h1>CiteReady</h1>
+  <p>Check whether AI assistants could quote this page: facts found, facts missing, and the questions people will ask.</p>
+  <label><input type="checkbox" id="private" /> <span>This page is private (staging, intranet, unpublished). Keep it on this device.</span></label>
+  <button id="go" type="button">Check this page</button>
+  <small id="note">The page text is handed to CiteReady in the URL fragment, which browsers never send to a server.</small>
+  <script src="popup.js"></script>
+</body>
+</html>

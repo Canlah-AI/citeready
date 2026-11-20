@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "canlah-hybridai-2026"
+  },
+  "targets": {
+    "canlah-hybridai-2026": {
+      "hosting": {
+        "citeready": ["citeready"]
+      }
+    }
+  }
+}

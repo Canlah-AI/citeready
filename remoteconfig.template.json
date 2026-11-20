@@ -1,0 +1,29 @@
+{
+  "parameters": {
+    "cloud_model": {
+      "defaultValue": { "value": "gemini-3.5-flash-lite" },
+      "description": "Cloud Gemini model used when CiteReady falls back to (or chooses) the cloud.",
+      "valueType": "STRING"
+    },
+    "on_device_max_chars": {
+      "defaultValue": { "value": "12000" },
+      "description": "Largest slice of page text sent to Gemini Nano in one prompt (on-device requests are capped at 9,216 tokens including instructions and output).",
+      "valueType": "NUMBER"
+    },
+    "max_private_chunks": {
+      "defaultValue": { "value": "6" },
+      "description": "How many on-device chunks a long PRIVATE draft may be split into before CiteReady asks for consent to use the cloud.",
+      "valueType": "NUMBER"
+    },
+    "mask_contacts_for_cloud": {
+      "defaultValue": { "value": "true" },
+      "description": "When a private draft is sent to the cloud with consent, replace emails and phone numbers with placeholders first.",
+      "valueType": "BOOLEAN"
+    },
+    "prompt_version": {
+      "defaultValue": { "value": "v1" },
+      "description": "Shown in the route log so prompt changes can be traced.",
+      "valueType": "STRING"
+    }
+  }
+}

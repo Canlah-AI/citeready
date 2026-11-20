@@ -1,0 +1,14 @@
+{
+  "manifest_version": 3,
+  "name": "CiteReady — check this page",
+  "short_name": "CiteReady",
+  "version": "0.1.0",
+  "description": "Send the page you are on to CiteReady to see whether AI assistants can quote it. Hybrid on-device / cloud via Firebase AI Logic.",
+  "action": {
+    "default_title": "Check this page with CiteReady",
+    "default_popup": "popup.html",
+    "default_icon": { "16": "icon-16.png", "32": "icon-32.png", "48": "icon-48.png", "128": "icon-128.png" }
+  },
+  "icons": { "16": "icon-16.png", "32": "icon-32.png", "48": "icon-48.png", "128": "icon-128.png" },
+  "permissions": ["activeTab", "scripting"]
+}

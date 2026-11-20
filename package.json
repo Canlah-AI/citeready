@@ -1,0 +1,23 @@
+{
+  "name": "citeready",
+  "version": "0.1.0",
+  "private": true,
+  "description": "CiteReady: check whether a page or draft is ready to be quoted by AI assistants. Hybrid on-device (Gemini Nano) + cloud (Gemini) inference with Firebase AI Logic.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "deploy": "npm run build && firebase deploy --only hosting:citeready,remoteconfig"
+  },
+  "dependencies": {
+    "firebase": "^13.4.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "vite": "^8.3.8",
+    "vitest": "^4.0.0"
+  }
+}
